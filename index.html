@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DOCX → PDF Converter</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+<style>
+:root{
+  --bg:#f5f7fb;
+  --card:#fff;
+  --text:#111;
+  --primary:#2563eb;
+  --ok:#10b981;
+  --border:#e5e7eb;
+}
+
+[data-theme="dark"]{
+  --bg:#0b1220;
+  --card:#111a2e;
+  --text:#e5e7eb;
+  --border:#243042;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  padding:20px;
+}
+
+.app{
+  width:100%;
+  max-width:900px;
+  background:var(--card);
+  padding:24px;
+  border-radius:16px;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.drop{
+  border:2px dashed var(--border);
+  padding:40px;
+  text-align:center;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.drop.dragover{border-color:var(--primary);}
+
+input{display:none;}
+
+.files{
+  margin-top:15px;
+}
+
+.file{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  border:1px solid var(--border);
+  margin-top:8px;
+  border-radius:8px;
+}
+
+.btns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:20px;
+}
+
+button{
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.primary{background:var(--primary);color:#fff;}
+.ok{background:var(--ok);color:#fff;}
+.gray{background:transparent;border:1px solid var(--border);color:var(--text);}
+
+.preview{
+  margin-top:20px;
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#fff;
+  color:#000;
+  max-height:400px;
+  overflow:auto;
+}
+
+.progress{
+  height:8px;
+  background:var(--border);
+  border-radius:5px;
+  margin-top:15px;
+  overflow:hidden;
+}
+
+.bar{
+  height:100%;
+  width:0%;
+  background:var(--primary);
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<div class="header">
+<h2>DOCX → PDF</h2>
+<button id="theme">🌙</button>
+</div>
+
+<div class="drop" id="drop">
+<i class="fa fa-upload"></i>
+<p>Upuść pliki DOCX lub kliknij</p>
+<input type="file" id="input" multiple accept=".docx">
+</div>
+
+<div class="files" id="files"></div>
+
+<div class="btns">
+<button class="primary" id="convert">Konwertuj</button>
+<button class="gray" id="clear">Wyczyść</button>
+</div>
+
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<div class="preview" id="preview"></div>
+
+</div>
+
+<script>
+const input=document.getElementById('input');
+const drop=document.getElementById('drop');
+const filesBox=document.getElementById('files');
+const preview=document.getElementById('preview');
+const bar=document.getElementById('bar');
+
+let queue=[];
+
+// theme
+document.getElementById('theme').onclick=()=>{
+  const t=document.body.dataset.theme==="dark"?"light":"dark";
+  document.body.dataset.theme=t;
+  localStorage.setItem("theme",t);
+};
+document.body.dataset.theme=localStorage.getItem("theme")||"light";
+
+// drag drop
+drop.onclick=()=>input.click();
+drop.ondragover=e=>{e.preventDefault();drop.classList.add("dragover");};
+drop.ondragleave=()=>drop.classList.remove("dragover");
+drop.ondrop=e=>{
+  e.preventDefault();
+  drop.classList.remove("dragover");
+  handle(e.dataTransfer.files);
+};
+
+input.onchange=e=>handle(e.target.files);
+
+function handle(files){
+  [...files].forEach(f=>{
+    if(!f.name.endsWith(".docx")) return;
+    queue.push(f);
+  });
+  render();
+}
+
+function render(){
+  filesBox.innerHTML="";
+  queue.forEach((f,i)=>{
+    const div=document.createElement("div");
+    div.className="file";
+    div.innerHTML=`${f.name} <button onclick="removeFile(${i})">X</button>`;
+    filesBox.appendChild(div);
+  });
+}
+
+window.removeFile=(i)=>{
+  queue.splice(i,1);
+  render();
+};
+
+document.getElementById('clear').onclick=()=>{
+  queue=[];
+  render();
+  preview.innerHTML="";
+};
+
+async function convertOne(file){
+  const buf=await file.arrayBuffer();
+
+  const res=await mammoth.convertToHtml(
+    {arrayBuffer:buf},
+    {
+      convertImage:mammoth.images.imgElement(img=>
+        img.read("base64").then(b=>({
+          src:`data:${img.contentType};base64,${b}`
+        }))
+      )
+    }
+  );
+
+  preview.innerHTML=res.value;
+
+  const container=document.createElement("div");
+  container.innerHTML=res.value;
+
+  const opt={
+    margin:10,
+    filename:file.name.replace(".docx",".pdf"),
+    image:{type:"jpeg",quality:0.98},
+    html2canvas:{scale:3},
+    jsPDF:{unit:"mm",format:"a4"}
+  };
+
+  const pdf=await html2pdf().set(opt).from(container).toPdf().get("pdf");
+  return pdf.output("blob");
+}
+
+document.getElementById('convert').onclick=async()=>{
+  if(!queue.length) return;
+
+  bar.style.width="10%";
+
+  for(let i=0;i<queue.length;i++){
+    bar.style.width=((i/queue.length)*100)+"%";
+
+    const blob=await convertOne(queue[i]);
+
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download=queue[i].name.replace(".docx",".pdf");
+    a.click();
+  }
+
+  bar.style.width="100%";
+};
+</script>
+
+</body>
+</html>
