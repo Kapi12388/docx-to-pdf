@@ -1,260 +1,642 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DOCX → PDF Converter</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profesjonalny Konwerter DOCX do PDF</title>
+    
+    <!-- Biblioteki -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s ease;
+        }
 
-<style>
-:root{
-  --bg:#f5f7fb;
-  --card:#fff;
-  --text:#111;
-  --primary:#2563eb;
-  --ok:#10b981;
-  --border:#e5e7eb;
-}
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
 
-[data-theme="dark"]{
-  --bg:#0b1220;
-  --card:#111a2e;
-  --text:#e5e7eb;
-  --border:#243042;
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui;}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: var(--transition);
+            min-height: 100vh;
+        }
 
-body{
-  background:var(--bg);
-  color:var(--text);
-  display:flex;
-  justify-content:center;
-  padding:20px;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-.app{
-  width:100%;
-  max-width:900px;
-  background:var(--card);
-  padding:24px;
-  border-radius:16px;
-}
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
 
-.header{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary);
+        }
 
-.drop{
-  border:2px dashed var(--border);
-  padding:40px;
-  text-align:center;
-  border-radius:12px;
-  cursor:pointer;
-}
+        .theme-toggle {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-main);
+            transition: var(--transition);
+        }
 
-.drop.dragover{border-color:var(--primary);}
+        /* Dashboard Grid */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
 
-input{display:none;}
+        @media (max-width: 992px) {
+            .grid-layout { grid-template-columns: 1fr; }
+        }
 
-.files{
-  margin-top:15px;
-}
+        /* Sidebar - Upload */
+        .upload-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 2rem;
+        }
 
-.file{
-  display:flex;
-  justify-content:space-between;
-  padding:10px;
-  border:1px solid var(--border);
-  margin-top:8px;
-  border-radius:8px;
-}
+        .drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(37, 99, 235, 0.05);
+            margin-bottom: 1rem;
+        }
 
-.btns{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:20px;
-}
+        .drop-zone:hover, .drop-zone.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+        }
 
-button{
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-}
+        .drop-zone i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
 
-.primary{background:var(--primary);color:#fff;}
-.ok{background:var(--ok);color:#fff;}
-.gray{background:transparent;border:1px solid var(--border);color:var(--text);}
+        #fileInput { display: none; }
 
-.preview{
-  margin-top:20px;
-  padding:20px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:#fff;
-  color:#000;
-  max-height:400px;
-  overflow:auto;
-}
+        /* File List */
+        .file-list {
+            margin-top: 1.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
 
-.progress{
-  height:8px;
-  background:var(--border);
-  border-radius:5px;
-  margin-top:15px;
-  overflow:hidden;
-}
+        .file-item {
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
 
-.bar{
-  height:100%;
-  width:0%;
-  background:var(--primary);
-}
-</style>
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .file-info { flex: 1; overflow: hidden; }
+        .file-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .file-size { font-size: 0.75rem; color: var(--text-muted); }
+
+        .btn-remove {
+            color: #ef4444;
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: var(--transition);
+        }
+
+        .btn-remove:hover { transform: scale(1.2); }
+
+        /* Preview Area */
+        .preview-container {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        /* A4 Simulation Style */
+        .doc-canvas-wrapper {
+            background: #cbd5e1;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            overflow: auto;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        #docCanvas {
+            background: white;
+            width: 210mm; /* A4 width */
+            min-height: 297mm;
+            padding: 20mm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            transform-origin: top center;
+            color: black !important; /* Ensure content is readable during conversion */
+        }
+
+        /* Fix Mammoth styling in preview */
+        #docCanvas img { max-width: 100%; height: auto; }
+        #docCanvas table { width: 100%; border-collapse: collapse; margin-bottom: 1em; }
+        #docCanvas table, #docCanvas td, #docCanvas th { border: 1px solid #000; padding: 5px; }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 0.75rem; }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { background: var(--border-color); }
+
+        /* Results / Success */
+        #downloadList {
+            margin-top: 1rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .result-item {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Loading / Progress */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            backdrop-filter: blur(4px);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #progressInfo { text-align: center; font-size: 1.1rem; }
+
+        /* Warning Notifications */
+        .warnings {
+            background: #fffbeb;
+            border: 1px solid #fbbf24;
+            color: #92400e;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            display: none;
+        }
+    </style>
 </head>
+<body data-theme="light">
 
-<body>
-<div class="app">
+    <div class="overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div id="progressInfo">Przetwarzanie dokumentów... 0%</div>
+    </div>
 
-<div class="header">
-<h2>DOCX → PDF</h2>
-<button id="theme">🌙</button>
-</div>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-file-pdf"></i>
+                DOCX2PDF <small style="font-weight: 300; font-size: 0.7rem;">PRO</small>
+            </div>
+            <button class="theme-toggle" id="themeBtn">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
 
-<div class="drop" id="drop">
-<i class="fa fa-upload"></i>
-<p>Upuść pliki DOCX lub kliknij</p>
-<input type="file" id="input" multiple accept=".docx">
-</div>
+        <div class="grid-layout">
+            <!-- Side Controls -->
+            <aside>
+                <div class="upload-card">
+                    <div class="drop-zone" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Przeciągnij pliki DOCX</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Obsługiwany format: .docx</p>
+                        <input type="file" id="fileInput" accept=".docx" multiple>
+                    </div>
 
-<div class="files" id="files"></div>
+                    <div class="btn-group" style="width: 100%;">
+                        <button class="btn btn-primary" id="startBtn" disabled style="flex: 1; justify-content: center;">
+                            <i class="fas fa-cog"></i> Konwertuj Wszystko
+                        </button>
+                        <button class="btn btn-outline" id="clearBtn" title="Resetuj">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
 
-<div class="btns">
-<button class="primary" id="convert">Konwertuj</button>
-<button class="gray" id="clear">Wyczyść</button>
-</div>
+                    <div id="mammothWarnings" class="warnings"></div>
 
-<div class="progress"><div class="bar" id="bar"></div></div>
+                    <div class="file-list" id="fileList">
+                        <!-- Pliki pojawią się tutaj -->
+                    </div>
+                </div>
+            </aside>
 
-<div class="preview" id="preview"></div>
+            <!-- Main Content Area -->
+            <main class="preview-container">
+                <div class="preview-header">
+                    <h3 id="previewTitle">Podgląd dokumentu</h3>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Skala:</span>
+                        <select id="scaleControl" class="btn-outline" style="padding: 0.2rem 0.5rem; border-radius: 4px;">
+                            <option value="0.5">50%</option>
+                            <option value="0.75" selected>75%</option>
+                            <option value="1.0">100%</option>
+                        </select>
+                    </div>
+                </div>
 
-</div>
+                <div class="doc-canvas-wrapper" id="canvasScrollArea">
+                    <div id="docCanvas">
+                        <!-- Wygenerowany HTML pojawi się tutaj -->
+                        <div style="color: var(--text-muted); text-align: center; margin-top: 5rem;">
+                            Wczytaj plik, aby zobaczyć podgląd.
+                        </div>
+                    </div>
+                </div>
 
-<script>
-const input=document.getElementById('input');
-const drop=document.getElementById('drop');
-const filesBox=document.getElementById('files');
-const preview=document.getElementById('preview');
-const bar=document.getElementById('bar');
+                <div id="downloadList">
+                    <!-- Linki do pobrania -->
+                </div>
+            </main>
+        </div>
+    </div>
 
-let queue=[];
+    <script>
+        // State management
+        let filesQueue = [];
+        const themeBtn = document.getElementById('themeBtn');
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileListContainer = document.getElementById('fileList');
+        const docCanvas = document.getElementById('docCanvas');
+        const startBtn = document.getElementById('startBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const downloadList = document.getElementById('downloadList');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const progressInfo = document.getElementById('progressInfo');
+        const scaleControl = document.getElementById('scaleControl');
+        const mammothWarnings = document.getElementById('mammothWarnings');
 
-// theme
-document.getElementById('theme').onclick=()=>{
-  const t=document.body.dataset.theme==="dark"?"light":"dark";
-  document.body.dataset.theme=t;
-  localStorage.setItem("theme",t);
-};
-document.body.dataset.theme=localStorage.getItem("theme")||"light";
+        // Theme management
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        }
 
-// drag drop
-drop.onclick=()=>input.click();
-drop.ondragover=e=>{e.preventDefault();drop.classList.add("dragover");};
-drop.ondragleave=()=>drop.classList.remove("dragover");
-drop.ondrop=e=>{
-  e.preventDefault();
-  drop.classList.remove("dragover");
-  handle(e.dataTransfer.files);
-};
+        themeBtn.addEventListener('click', () => {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            const nextTheme = isDark ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', nextTheme);
+            localStorage.setItem('theme', nextTheme);
+            themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
 
-input.onchange=e=>handle(e.target.files);
+        // Event Listeners
+        dropZone.onclick = () => fileInput.click();
 
-function handle(files){
-  [...files].forEach(f=>{
-    if(!f.name.endsWith(".docx")) return;
-    queue.push(f);
-  });
-  render();
-}
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('active'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('active'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('active');
+            handleFiles(e.dataTransfer.files);
+        });
 
-function render(){
-  filesBox.innerHTML="";
-  queue.forEach((f,i)=>{
-    const div=document.createElement("div");
-    div.className="file";
-    div.innerHTML=`${f.name} <button onclick="removeFile(${i})">X</button>`;
-    filesBox.appendChild(div);
-  });
-}
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
 
-window.removeFile=(i)=>{
-  queue.splice(i,1);
-  render();
-};
+        clearBtn.onclick = () => resetApp();
 
-document.getElementById('clear').onclick=()=>{
-  queue=[];
-  render();
-  preview.innerHTML="";
-};
+        scaleControl.addEventListener('change', (e) => {
+            docCanvas.style.transform = `scale(${e.target.value})`;
+        });
 
-async function convertOne(file){
-  const buf=await file.arrayBuffer();
+        // Functions
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.name.toLowerCase().endsWith('.docx')) {
+                    filesQueue.push(file);
+                    updateFileList();
+                    if (filesQueue.length === 1) renderPreview(file);
+                } else {
+                    alert('Dozwolone są tylko pliki .docx');
+                }
+            });
+            updateButtons();
+        }
 
-  const res=await mammoth.convertToHtml(
-    {arrayBuffer:buf},
-    {
-      convertImage:mammoth.images.imgElement(img=>
-        img.read("base64").then(b=>({
-          src:`data:${img.contentType};base64,${b}`
-        }))
-      )
-    }
-  );
+        function updateFileList() {
+            fileListContainer.innerHTML = '';
+            filesQueue.forEach((file, index) => {
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${(file.size / 1024).toFixed(1)} KB</div>
+                    </div>
+                    <i class="fas fa-trash-alt btn-remove" onclick="removeFile(${index})"></i>
+                `;
+                item.onclick = (e) => {
+                    if(!e.target.classList.contains('btn-remove')) renderPreview(file);
+                };
+                fileListContainer.appendChild(item);
+            });
+        }
 
-  preview.innerHTML=res.value;
+        function removeFile(index) {
+            filesQueue.splice(index, 1);
+            updateFileList();
+            updateButtons();
+            if (filesQueue.length === 0) {
+                docCanvas.innerHTML = '<div style="color: var(--text-muted); text-align: center; margin-top: 5rem;">Wczytaj plik, aby zobaczyć podgląd.</div>';
+                document.getElementById('previewTitle').innerText = 'Podgląd dokumentu';
+            }
+        }
 
-  const container=document.createElement("div");
-  container.innerHTML=res.value;
+        function updateButtons() {
+            startBtn.disabled = filesQueue.length === 0;
+        }
 
-  const opt={
-    margin:10,
-    filename:file.name.replace(".docx",".pdf"),
-    image:{type:"jpeg",quality:0.98},
-    html2canvas:{scale:3},
-    jsPDF:{unit:"mm",format:"a4"}
-  };
+        function resetApp() {
+            filesQueue = [];
+            updateFileList();
+            updateButtons();
+            docCanvas.innerHTML = '<div style="color: var(--text-muted); text-align: center; margin-top: 5rem;">Wczytaj plik, aby zobaczyć podgląd.</div>';
+            downloadList.innerHTML = '';
+            mammothWarnings.style.display = 'none';
+            document.getElementById('previewTitle').innerText = 'Podgląd dokumentu';
+        }
 
-  const pdf=await html2pdf().set(opt).from(container).toPdf().get("pdf");
-  return pdf.output("blob");
-}
+        // Mammoth Logic - Renders preview to canvas
+        async function renderPreview(file) {
+            document.getElementById('previewTitle').innerText = `Podgląd: ${file.name}`;
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const arrayBuffer = event.target.result;
+                const options = {
+                    styleMap: [
+                        "p[style-name='Heading 1'] => h1:fresh",
+                        "p[style-name='Heading 2'] => h2:fresh",
+                        "p[style-name='Table'] => table",
+                    ],
+                    convertImage: mammoth.images.imgElement(function(image) {
+                        return image.read("base64").then(function(imageBuffer) {
+                            return { src: "data:" + image.contentType + ";base64," + imageBuffer.base64 };
+                        });
+                    })
+                };
 
-document.getElementById('convert').onclick=async()=>{
-  if(!queue.length) return;
+                try {
+                    const result = await mammoth.convertToHtml({arrayBuffer: arrayBuffer}, options);
+                    docCanvas.innerHTML = result.value;
+                    
+                    if (result.messages.length > 0) {
+                        mammothWarnings.innerHTML = '<strong>Uwagi konwertera:</strong><br>' + result.messages.map(m => m.message).join('<br>');
+                        mammothWarnings.style.display = 'block';
+                    } else {
+                        mammothWarnings.style.display = 'none';
+                    }
+                } catch (err) {
+                    console.error(err);
+                    docCanvas.innerHTML = `<p style="color: red;">Błąd wczytywania: ${err.message}</p>`;
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
 
-  bar.style.width="10%";
+        // Conversion Engine
+        startBtn.onclick = async () => {
+            loadingOverlay.style.display = 'flex';
+            downloadList.innerHTML = '';
+            
+            for (let i = 0; i < filesQueue.length; i++) {
+                const file = filesQueue[i];
+                const pct = Math.round((i / filesQueue.length) * 100);
+                progressInfo.innerText = `Przetwarzanie (${i + 1}/${filesQueue.length}): ${file.name}... ${pct}%`;
+                
+                try {
+                    await processAndDownloadPDF(file);
+                } catch (err) {
+                    console.error("PDF processing error:", err);
+                    alert(`Błąd podczas generowania PDF dla ${file.name}`);
+                }
+            }
+            
+            progressInfo.innerText = "Zakończono!";
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 1000);
+        };
 
-  for(let i=0;i<queue.length;i++){
-    bar.style.width=((i/queue.length)*100)+"%";
+        async function processAndDownloadPDF(file) {
+            const reader = new FileReader();
+            return new Promise((resolve, reject) => {
+                reader.onload = async (e) => {
+                    try {
+                        const arrayBuffer = e.target.result;
+                        // Opcje konwersji do HTML (wyższa precyzja)
+                        const options = {
+                            convertImage: mammoth.images.imgElement(function(image) {
+                                return image.read("base64").then(function(imageBuffer) {
+                                    return { src: "data:" + image.contentType + ";base64," + imageBuffer.base64 };
+                                });
+                            })
+                        };
+                        const { value: htmlContent } = await mammoth.convertToHtml({arrayBuffer: arrayBuffer}, options);
 
-    const blob=await convertOne(queue[i]);
+                        // Tworzenie ukrytego kontenera dla poprawnej jakości
+                        const workerEl = document.createElement('div');
+                        workerEl.innerHTML = htmlContent;
+                        // Aplikowanie stylów PDF do tymczasowego kontenera
+                        Object.assign(workerEl.style, {
+                            width: '210mm',
+                            padding: '15mm',
+                            background: 'white',
+                            color: 'black',
+                            position: 'absolute',
+                            left: '-9999px',
+                            top: '0'
+                        });
+                        
+                        // Fix for tables and images inside the hidden worker
+                        const styleTag = document.createElement('style');
+                        styleTag.innerHTML = `
+                            table { width: 100%; border-collapse: collapse; page-break-inside: auto; margin-bottom: 1em; }
+                            tr { page-break-inside: avoid; page-break-after: auto; }
+                            td, th { border: 1px solid #444; padding: 6pt; word-wrap: break-word; }
+                            img { max-width: 100%; height: auto; page-break-inside: avoid; }
+                            h1, h2, h3 { page-break-after: avoid; }
+                            p { margin-bottom: 1em; text-align: justify; }
+                        `;
+                        workerEl.appendChild(styleTag);
+                        document.body.appendChild(workerEl);
 
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download=queue[i].name.replace(".docx",".pdf");
-    a.click();
-  }
+                        const opt = {
+                            margin: [10, 10, 10, 10], // top, left, bot, right
+                            filename: file.name.replace('.docx', '.pdf'),
+                            image: { type: 'jpeg', quality: 0.98 },
+                            html2canvas: { 
+                                scale: 4, 
+                                useCORS: true, 
+                                letterRendering: true,
+                                scrollY: 0,
+                                scrollX: 0
+                            },
+                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                        };
 
-  bar.style.width="100%";
-};
-</script>
+                        // Generate as blob to keep everything client-side and browser-friendly
+                        const pdfBlob = await html2pdf().set(opt).from(workerEl).output('blob');
+                        const pdfUrl = URL.createObjectURL(pdfBlob);
+                        
+                        // Clean up
+                        document.body.removeChild(workerEl);
+                        
+                        // UI Notification / Link
+                        addDownloadLink(file.name.replace('.docx', '.pdf'), pdfUrl);
+                        
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            });
+        }
 
+        function addDownloadLink(fileName, url) {
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            item.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-check-circle" style="color: #22c55e;"></i>
+                    <span style="font-size: 0.9rem; font-weight: 500;">${fileName}</span>
+                </div>
+                <a href="${url}" download="${fileName}" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; background: #22c55e; color: white; border: none;">
+                    <i class="fas fa-download"></i> Pobierz
+                </a>
+            `;
+            downloadList.appendChild(item);
+        }
+
+        // Automatic resizing of preview on window resize
+        window.addEventListener('resize', () => {
+            const wrapperWidth = document.getElementById('canvasScrollArea').clientWidth - 64;
+            const docWidth = 794; // approx px for 210mm
+            if (wrapperWidth < docWidth) {
+                const ratio = (wrapperWidth / docWidth).toFixed(2);
+                docCanvas.style.transform = `scale(${ratio})`;
+                scaleControl.value = ratio;
+            }
+        });
+    </script>
 </body>
 </html>
