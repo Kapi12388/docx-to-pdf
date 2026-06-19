@@ -3,348 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fizjologia 2025 - Opal Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Egzamin Fizjologia - I Termin 2025</title>
     <style>
-        :root {
-            --bg-opal: linear-gradient(135deg, #ffffff 0%, #fff9f9 25%, #fdfbf7 50%, #f5f7fa 75%, #ffffff 100%);
-            --glass-white: rgba(255, 255, 255, 0.6);
-            --border-pearl: rgba(255, 255, 255, 0.8);
-            --powder: #fce4ec;
-            --beige: #f5f5dc;
-            --txt: #4a4a4a;
-            --accent: #d1d9e6;
-            --correct: #81c784;
-            --wrong: #ef9a9a;
-        }
-
-        body {
-            margin: 0;
-            padding: 10px;
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg-opal);
-            background-size: 400% 400%;
-            animation: opalFlow 20s ease infinite;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--txt);
-            overflow-x: hidden;
-        }
-
-        @keyframes opalFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        #app-container {
-            background: var(--glass-white);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px solid var(--border-pearl);
-            border-radius: 35px;
-            padding: 40px;
-            width: 100%;
-            max-width: 750px;
-            box-shadow: 20px 20px 60px #d1d9e6, -20px -20px 60px #ffffff;
-            position: relative;
-            transition: all 0.5s ease;
-        }
-
-        .progress-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: rgba(0,0,0,0.03);
-            border-radius: 35px 35px 0 0;
-            overflow: hidden;
-        }
-
-        #progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--powder), var(--beige), white);
-            transition: width 0.6s ease;
-        }
-
-        .q-header { font-size: 0.8rem; font-weight: 600; opacity: 0.5; margin-bottom: 10px; letter-spacing: 2px; }
-        
-        .q-text { font-size: 1.3rem; font-weight: 700; margin-bottom: 30px; line-height: 1.5; animation: blurIn 0.5s ease forwards; }
-
-        @keyframes blurIn {
-            from { filter: blur(10px); opacity: 0; transform: translateY(10px); }
-            to { filter: blur(0); opacity: 1; transform: translateY(0); }
-        }
-
-        .options-grid { display: grid; gap: 12px; }
-
-        .opt-btn {
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            padding: 18px 25px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 1rem;
-            text-align: left;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.02);
-        }
-
-        .opt-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 4px 4px 15px rgba(0,0,0,0.05); }
-
-        .opt-btn.active { background: white; border-color: var(--powder); box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05); font-weight: 600; }
-
-        .main-btn {
-            margin-top: 30px;
-            width: 100%;
-            padding: 18px;
-            border-radius: 20px;
-            border: none;
-            background: white;
-            color: #777;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            box-shadow: 5px 5px 15px #d1d9e6, -5px -5px 15px #ffffff;
-            transition: 0.3s;
-        }
-
-        .main-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .main-btn:hover:not(:disabled) { transform: scale(1.01); color: #333; }
-
-        #fb-box {
-            margin-top: 25px;
-            padding: 25px;
-            border-radius: 25px;
-            display: none;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .fb-correct { background: rgba(129, 199, 132, 0.15); border: 1px solid var(--correct); }
-        .fb-wrong { background: rgba(239, 154, 154, 0.15); border: 1px solid var(--wrong); }
-
-        #results { text-align: center; display: none; }
-        .score-num { font-size: 4rem; font-weight: 700; color: var(--powder); text-shadow: 2px 2px 4px rgba(0,0,0,0.05); }
-        .error-log { text-align: left; margin-top: 30px; max-height: 300px; overflow-y: auto; padding-right: 10px; }
-        .error-item { padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.85rem; }
-
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: var(--powder); border-radius: 10px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+        #quiz-container { background: white; width: 100%; max-width: 800px; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; font-size: 24px; margin-bottom: 20px; }
+        .question-meta { color: #7f8c8d; font-size: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .question-text { font-size: 18px; font-weight: 600; margin-bottom: 20px; line-height: 1.5; color: #34495e; }
+        .options { display: grid; gap: 10px; }
+        .option-btn { padding: 15px; border: 2px solid #ecf0f1; border-radius: 8px; background: #fff; cursor: pointer; text-align: left; font-size: 16px; transition: all 0.2s; }
+        .option-btn:hover:not(:disabled) { background-color: #f8f9fa; border-color: #3498db; }
+        .option-btn.correct { background-color: #2ecc71 !important; color: white; border-color: #27ae60; }
+        .option-btn.wrong { background-color: #e74c3c !important; color: white; border-color: #c0392b; }
+        #feedback { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; }
+        .feedback-correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback-wrong { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .explanation { margin-top: 10px; font-style: italic; font-size: 14px; color: #555; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px; }
+        .controls { margin-top: 30px; display: flex; justify-content: space-between; gap: 10px; }
+        button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: opacity 0.3s; }
+        .btn-next { background: #3498db; color: white; }
+        .btn-prev { background: #95a5a6; color: white; }
+        .btn-skip { background: #f39c12; color: white; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        #results { display: none; text-align: center; }
+        .error-list { text-align: left; margin-top: 20px; background: #fff3f3; padding: 15px; border-radius: 8px; }
+        .error-item { margin-bottom: 10px; font-size: 14px; border-bottom: 1px solid #ffdada; padding-bottom: 5px; }
+        .progress-bar { height: 8px; background: #ecf0f1; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #3498db; width: 0%; transition: width 0.3s; }
     </style>
 </head>
 <body>
 
-<div id="app-container">
-    <div class="progress-container"><div id="progress-fill"></div></div>
-    
-    <div id="quiz-ui">
-        <div class="q-header" id="q-meta"></div>
-        <div class="q-text" id="q-txt"></div>
-        <div class="options-grid" id="opt-list"></div>
-        <button class="main-btn" id="action-btn" onclick="handleFlow()" disabled>SPRAWDŹ</button>
-        <div id="fb-box"></div>
+<div id="quiz-container">
+    <div id="quiz-view">
+        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+        <div class="question-meta">
+            <span id="question-number">Pytanie 1 z X</span>
+            <span id="score-live">Wynik: 0/0</span>
+        </div>
+        <div id="question-area">
+            <div class="question-text" id="q-text">Ładowanie pytania...</div>
+            <div class="options" id="q-options"></div>
+        </div>
+        <div id="feedback">
+            <div id="feedback-msg"></div>
+            <div id="explanation" class="explanation"></div>
+        </div>
+        <div class="controls">
+            <button class="btn-prev" id="prev-btn" onclick="prevQuestion()">Wstecz</button>
+            <button class="btn-skip" id="skip-btn" onclick="skipQuestion()">Pomiń</button>
+            <button class="btn-next" id="next-btn" onclick="nextQuestion()" disabled>Następne</button>
+        </div>
     </div>
 
     <div id="results">
-        <h2>WYNIK TESTU</h2>
-        <div class="score-num" id="final-pct"></div>
-        <div id="score-text"></div>
-        <div class="error-log" id="err-list"></div>
-        <button class="main-btn" onclick="location.reload()">POWTÓRZ TEST</button>
+        <h1>Koniec Testu!</h1>
+        <h2 id="final-score">Wynik: 0/0 (0%)</h2>
+        <div id="error-summary" class="error-list"></div>
+        <button class="btn-next" style="margin-top:20px" onclick="location.reload()">Zacznij od nowa</button>
     </div>
 </div>
 
 <script>
-    const questions = [
-        { q: "U pacjenta z jakim schorzeniem podanie erytropoetyny będzie miało najwięcej sensu?", a: ["niewydolność nerek", "niewydolność oddechowa", "hipoksja hipoksyczna", "policytemia"], c: 0, e: "Nerki są głównym źródłem EPO. Ich niewydolność prowadzi do anemii." },
-        { q: "Które zdanie najlepiej opisuje siły elektryczne i chemiczne dla Na+ przy depolaryzacji?", a: ["siły chemiczne napływ, elektryczne wypływ", "siły chemiczne napływ, elektryczne napływ", "siły chemiczne wypływ, elektryczne napływ", "siły chemiczne wypływ, elektryczne wypływ"], c: 1, e: "Podczas depolaryzacji oba gradienty (stężeń i elektryczny) promują napływ sodu." },
-        { q: "Pacjent nie potrafi zapiąć guzików w koszuli. Sugeruje to:", a: ["drżenie zamiarowe", "dysmetria", "dysdiadochokineza", "dysartria"], c: 2, e: "Dysdiadochokineza to niemożność wykonywania szybkich ruchów naprzemiennych." },
-        { q: "95-latka: 'włożyłam garnek do telewizora'. Mowa płynna, bez sensu. To uszkodzenie:", a: ["płata czołowego", "płata skroniowego (afazja sensoryczna)", "płata potylicznego", "płata ciemieniowego"], c: 1, e: "Afazja Wernickego (czuciowa) wynika z uszkodzenia płata skroniowego." },
-        { q: "Wskaż błędne o układzie limbicznym:", a: ["zespół Korsakowa to amnezja", "usunięcie ciała migdałowatego powoduje lęk", "brak hipokampa - brak pamięci długotrwałej", "hipokamp tworzy wspomnienia"], c: 1, e: "BŁĄD: Usunięcie ciała migdałowatego powoduje oswojenie i brak strachu, nie lęk." },
-        { q: "Mięśnie gładkie jednostkowe:", a: ["brak automatyzmu", "wykazują automatyzm dzięki komórkom rozrusznikowym", "są obficie unerwione", "mają dużą precyzję"], c: 1, e: "Są to mięśnie typu trzewnego z własnym rozrusznikiem." },
-        { q: "Co najbardziej hamuje motorykę żołądka?", a: ["acetylocholina", "gastryna", "noradrenalina", "VIP"], c: 2, e: "Noradrenalina to mediator współczulny hamujący trawienie." },
-        { q: "Co może powodować szmer skurczowy?", a: ["niedomykalność aortalna", "niedomykalność pnia płucnego", "zwężenie mitralnej", "ubytek przegrody międzykomorowej"], c: 3, e: "VSD (ubytek przegrody) generuje szmer podczas skurczu komór." },
-        { q: "Zahamowanie ATP-azy Na/K w kanaliku bliższym:", a: ["zmniejsza reabsorpcję glukozy", "zwiększa wydalanie glukozy", "zwiększa reabsorpcję", "zmniejsza wydalanie"], c: 0, e: "Transport glukozy jest zależny od gradientu sodowego." },
-        { q: "Który układ czuciowy omija wzgórze?", a: ["propriocepcja", "smak", "węch", "wzrok"], c: 2, e: "Węch dociera do kory bezpośrednio." },
-        { q: "7-latek traci siłę mięśni i postawę. Brak mu:", a: ["dystrofiny", "receptora ACh", "acetylocholinoesterazy"], c: 0, e: "To obraz kliniczny dystrofii Duchenne'a." },
-        { q: "Człowiek po udarze mówi szybko i bez sensu, nie rozumie słów. To:", a: ["prozopagnozja", "synestezja", "afazja Broki", "afazja Wernickego"], c: 3, e: "Afazja sensoryczna (Wernickego)." },
-        { q: "Wzrost poziomu OB powoduje:", a: ["wzrost globulin", "wzrost albumin", "spadek fibrynogenu", "spadek ceruloplazminy"], c: 0, e: "Globuliny i fibrynogen przyspieszają opadanie krwinek." },
-        { q: "Zespół Cushinga to:", a: ["zmniejszona odpowiedź na insulinę", "spadek rozkładu białek", "hipoglikemia", "wzrost infekcji"], c: 0, e: "Nadmiar kortyzolu działa diabetogennie." },
-        { q: "Zawał lewej komory skutkuje bezpośrednio:", a: ["spadkiem objętości wyrzutowej (SV)", "wzrostem frakcji", "spadkiem ciśnienia żylnego", "brakiem zmian"], c: 0, e: "Niższa kurczliwość to mniejsze SV." },
-        { q: "Co jest unerwione TYLKO przywspółczulnie?", a: ["gruczoły potowe", "układ bodźcoprzewodzący", "narządy płciowe", "żadne"], c: 3, e: "Prawie wszystko ma podwójne unerwienie; potowe są współczulne." },
-        { q: "Hipowolemia i hiponatremia sugerują:", a: ["SIADH", "niedobór mineralokortykoidów", "marskość wątroby"], c: 1, e: "Brak aldosteronu powoduje utratę sodu i wody." },
-        { q: "Prawidłowy czas krzepnięcia, nieprawidłowy krwawienia:", a: ["niedobór cz. krzepnięcia", "trombocytopenia", "reakcja naczyniowa", "B i C"], c: 3, e: "Krwawienie zależy od płytek i naczyń." },
-        { q: "Wchłanianie czynnika wewnętrznego (B12):", a: ["dwunastnica", "jelito cienkie", "jelito czcze", "jelito kręte"], c: 3, e: "Ostatni odcinek jelita cienkiego." },
-        { q: "Zewnątrzpochodny szlak krzepnięcia zaczyna:", a: ["aktywacja cz. XII", "aktywacja cz. X", "trombina", "tromboplastyna tkankowa"], c: 3, e: "Czynnik tkankowy (III) inicjuje ten szlak." },
-        { q: "Insulina hamuje:", a: ["glikolizę", "glikogenolizę", "syntezę tłuszczów", "wychwyt glukozy"], c: 1, e: "Hamuje rozpad glikogenu." },
-        { q: "Renina jest wydzielana przez:", a: ["tętniczkę odprowadzającą", "kanalik dystalny", "tętniczkę doprowadzającą", "podocyty"], c: 2, e: "Przez komórki aparatu przykłębuszkowego." },
-        { q: "Zwiększona luka anionowa to:", a: ["akumulacja anionów organicznych", "wydalanie HCO3", "zasadowica metaboliczna", "zasadowica oddechowa"], c: 0, e: "Obecność nienormatywnych kwasów." },
-        { q: "Kompensacja po wazodylatacji:", a: ["tachykardia", "bradykardia", "spadek SV", "spadek CO"], c: 0, e: "Odruch z baroreceptorów." },
-        { q: "hCG u płodu męskiego stymuluje:", a: ["progesteron", "ciałko żółte", "wydzielanie testosteronu", "skurcze"], c: 2, e: "Stymuluje jądra płodu." },
-        { q: "EPSP cechuje:", a: ["brak sumowania", "brak refrakcji bezwzględnej", "wszystko albo nic", "brak dekrementu"], c: 1, e: "Może się sumować." },
-        { q: "Komórki włoskowate zewnętrzne (OHC):", a: ["modulują czułość wewnętrznych", "napinają błonę bębenkową", "lokalizacja źródła", "przewodzą bezpośrednio"], c: 0, e: "Działają jako wzmacniacz kohlearny." },
-        { q: "Źrenica Argylla Robertsona:", a: ["akomodacja +, światło -", "zespół Hornera", "brak akomodacji", "rozszerzenie"], c: 0, e: "Objaw w kile." },
-        { q: "Ruch rzęsek w stronę kinocilium otwiera kanały:", a: ["Ca i K", "Na", "Cl", "zamyka kanały"], c: 0, e: "Depolaryzacja komórki." },
-        { q: "Najwyższe ciśnienie onkotyczne:", a: ["wewnątrzkomórkowe", "wewnątrznaczyniowe", "tkankowe", "jednakowe"], c: 1, e: "Zależy od białek osocza." },
-        { q: "Ostra faza boreliozy (bz=negatywny):", a: "IgM bz, IgG bz", b: "IgM +, IgG +", c: "IgM bz, IgG +", d: "IgM +, IgG bz", c: 3, e: "IgM świadczy o nowym zakażeniu." },
-        { q: "Deficyt tlenowy to:", a: ["nadmiar O2 po wysiłku", "różnica na początku wysiłku", "pokrywany przez ATP", "koniec wysiłku"], c: 1, e: "Dług tlenowy jest po wysiłku, deficyt na starcie." },
-        { q: "Przywspółczulny vs współczulny:", a: ["zwoje w pniu", "krótkie przedzwojowe", "krótkie zazwojowe", "długie zazwojowe"], c: 2, e: "Zwoje przy narządach." },
-        { q: "Najważniejszy enzym dla skrobi:", a: ["amylaza ślinowa", "amylaza trzustkowa"], c: 1, e: "Większość trawienia zachodzi w jelicie." },
-        { q: "Ból przewlekły:", a: ["włókna C, ostry", "włókna C, tępy", "A-delta, ostry", "A-delta, tępy"], c: 1, e: "Włókna C przewodzą wolny ból." },
-        { q: "Receptor NMDA:", a: ["chemiczny i elektryczny", "nikotynowy", "GABA", "żaden"], c: 0, e: "Wymaga glutaminianu i depolaryzacji." },
-        { q: "Hormon do PRODUKCJI mleka:", a: ["LH", "oksytocyna", "progesteron", "prolaktyna"], c: 3, e: "Prolaktyna produkuje, oksytocyna uwalnia." },
-        { q: "Większość wody i HCO3 wchłania się w:", a: ["kanaliku proksymalnym", "kanaliku dystalnym", "pętli Henlego", "zbiorczym"], c: 0, e: "Reabsorpcja masowa." },
-        { q: "Hormon selekcji pęcherzyka dominującego:", a: ["estradiol", "inhibina", "progesteron", "AMH"], c: 3, e: "AMH reguluje liczebność." },
-        { q: "Fałszywe o odkorowaniu/odmóżdżeniu:", a: ["lepsze rokowanie przy odkorowaniu", "odmóżdżenie - wyprost", "odkorowanie - zgięcie górne", "odkorowanie poniżej jądra czerwiennego"], c: 3, e: "Odkorowanie jest POWYŻEJ jądra czerwiennego." },
-        { q: "Uszkodzenie Th6 (Brown-Sequard):", a: ["wiotkie kontralateralnie", "brak wibracji kontralateralnie", "spastyczne kontralateralnie", "brak czucia bólu kontralateralnie"], c: 3, e: "Drogi rdzeniowo-wzgórzowe krzyżują się w rdzeniu." },
-        { q: "Móżdżek nowy:", a: ["napięcie", "planowanie ruchów", "równowaga", "odruchy"], c: 1, e: "Neocerebellum współpracuje z korą." },
-        { q: "Aglutynacja A1B Rh-:", a: ["surowica anty-A, anty-B, dolichotest", "surowica anty-D", "krwinka A i B", "wszystkie"], c: 0, e: "Reaguje z surowicami testowymi." },
-        { q: "Parafazja i astereognozja to uszkodzenie płata:", a: ["czołowego", "potylicznego", "skroniowego", "ciemieniowego"], c: 3, e: "Ciemieniowy odpowiada za integrację czuciową." },
-        { q: "Ostatnie miejsce trawienia białek do aminokwasów:", a: ["światło jelita", "rąbek szczoteczkowy okrężnicy", "rąbek szczoteczkowy jelita cienkiego", "żołądek"], c: 2, e: "Enzymy rąbka szczoteczkowego." },
-        { q: "Adrenalina zwiększa siłę serca przez:", a: ["wzrost Ca w siateczce", "fosforylację miozyny", "blokadę SERCA", "hamowanie RyR"], c: 0, e: "Efekt inotropowy dodatni." },
-        { q: "Objaw GÓRNEGO motoneuronu:", a: ["wiotkość", "zanik", "brak odruchów", "Babiński"], c: 3, e: "Objaw piramidowy." },
-        { q: "PMR zdanie prawdziwe:", a: ["180 mmHg", "więcej glukozy", "produkcja 500ml/dobę", "żadne"], c: 2, e: "Około 500ml na dobę." },
-        { q: "BBB tworzą:", a: ["astrocyty", "mikroglej", "ependyma", "podocyty"], c: 0, e: "Stopki astrocytów." },
-        { q: "M. gładki NIE potrzebuje:", a: ["aktyny", "miozyny", "troponiny", "Ca"], c: 2, e: "Ma kalmodulinę zamiast troponiny." },
-        { q: "Marskość wątroby - spadek ciśnienia:", a: ["onkotycznego", "hydrostatycznego", "osmotycznego", "tkankowego"], c: 0, e: "Brak albumin." },
-        { q: "Pompa Na/K powoduje:", a: ["hiperpolaryzację", "depolaryzację", "wzrost K zewnątrz", "brak zmian"], c: 0, e: "Pompa elektrogenna." },
-        { q: "Błędne o wapniu w m. gładkich:", a: ["IP3", "kanały napięciozależne", "zasuwka wymaga dużo energii", "konieczny"], c: 2, e: "Mechanizm zasuwki jest energooszczędny." },
-        { q: "Picie wody morskiej:", a: ["odwodnienie hipo", "przewodnienie", "odwodnienie hiper", "przewodnienie izo"], c: 2, e: "Wysoka osmolalność soli." },
-        { q: "Rozedma płuc to:", a: ["zwiększona objętość zalegająca", "odma", "zwłóknienie", "pylica"], c: 0, e: "Destrukcja przegród płucnych." },
-        { q: "Faza A-B cyklu serca (skurcz izowolumetryczny):", a: ["wzrost ciśnienia przy stałej objętości", "wyrzut", "rozkurcz", "skurcz przedsionków"], c: 0, e: "Faza przed otwarciem zastawek tętniczych." },
-        { q: "Alergia typu I - mediator z:", a: ["eozynofili", "makrofagów", "neutrofili", "mastocytów"], c: 3, e: "IgE wiąże się z mastocytami." },
-        { q: "Ujemne ciśnienie w pęcherzykach:", a: ["wydech", "wdech", "koniec wdechu", "brak"], c: 1, e: "Podczas wdechu powietrze jest zasysane." },
-        { q: "PTH powoduje:", a: ["reabsorpcję Ca", "wzrost fosforu we krwi", "spadek wit D", "spadek Ca jelitowo"], c: 0, e: "Zwiększa zwrotne wchłanianie Ca w nerkach." },
-        { q: "Hormony tarczycy (mielinizacja):", a: ["anulowane/mielinizacja", "wzrost płodu", "metabolizm", "wszystkie"], c: 0, e: "Kluczowe dla rozwoju mózgu." },
-        { q: "Zimno NIE powoduje:", a: ["spadku tarczycy", "drżenia", "katabolizmu", "zwężenia naczyń"], c: 0, e: "Tarczyca musi przyspieszyć." },
-        { q: "EKG: szerokie QRS, 180/min:", a: ["częstoskurcz komorowy", "migotanie komór", "blok", "migotanie przedsionków"], c: 0, e: "VT (Ventricular Tachycardia)." },
-        { q: "Odcinek PQ:", a: ["depolaryzacja przedsionków", "węzeł AV", "pęczek Hisa", "repolaryzacja"], c: 1, e: "Czas przejścia impulsu przez węzeł." },
-        { q: "Atropina:", a: ["bradykardia", "tachykardia", "skurcz źrenic", "więcej śliny"], c: 1, e: "Blokuje układ przywspółczulny." },
-        { q: "Parkinson (drżenie spoczynkowe):", a: ["neurony dopaminergiczne", "cholinergiczne", "GABA", "serotonina"], c: 0, e: "Zanik istoty czarnej." },
-        { q: "Płytka ruchowa ma receptory:", a: ["nikotynowe", "muskarynowe", "adrenergiczne", "GABA"], c: 0, e: "Dla acetylocholiny." },
-        { q: "Słone śledzie NIE:", a: ["hamują Ang II", "hamują ANP", "pobudzenie współczulne", "spadek filtracji"], c: 0, e: "Wzrost objętości hamuje RAA." },
-        { q: "Potencjał czynnościowy w oku:", a: ["czopki", "pręciki", "zwojowe", "dwubiegunowe"], c: 2, e: "Komórki zwojowe wysyłają impulsy." },
-        { q: "Uszkodzenie skrzyżowania nerwu wzrokowego:", a: ["brak widzenia bocznego", "ślepota", "centralne", "brak"], c: 0, e: "Niedowidzenie połowicze dwuskroniowe." },
-        { q: "Fałsz o mózgu:", a: ["delta w lekkim śnie", "beta czuwanie", "REM desynchronizacja", "miejsce sinawe"], c: 0, e: "Delta to sen głęboki." },
-        { q: "Najsilniej pobudza żołądek:", a: ["gastryna", "CCK", "sekretyna", "VIP"], c: 0, e: "Gastryna stymuluje motorykę i wydzielanie." },
-        { q: "Hipotonia -> choroba nerek:", a: ["spadek klirensu kreatyniny", "poliuria", "hipernatremia", "zasadowica"], c: 0, e: "Spadek GFR." },
-        { q: "Bufor erytrocytu:", a: ["deoksyhemoglobina", "oksyhemoglobina", "fosforan", "białczan"], c: 0, e: "Wiąże jony H+." },
-        { q: "Spadek pCO2 w krwi żylnej:", a: ["kwasica oddechowa", "zasadowica oddechowa", "wysiłek", "gorączka"], c: 1, e: "Efekt hiperwentylacji." },
-        { q: "Najwyższy PPM:", a: ["ciąża (2 tr)", "dieta białkowa", "wysiłek", "sen"], c: 0, e: "Znaczny wzrost metabolizmu." },
-        { q: "Łożyskowy 'hormon wzrostu':", a: ["hPL (somatomammotropina)", "hCG", "estriol", "progesteron"], c: 0, e: "Reguluje metabolizm matki." },
-        { q: "pO2 100 vs 95 to:", a: ["norma", "przeciek", "hipowentylacja", "blok"], c: 0, e: "Gradient fizjologiczny." },
-        { q: "Podwzgórze wydziela:", a: ["GnRH", "TSH", "Prolaktynę", "GH"], c: 0, e: "Podwzgórze uwalnia liberyny." },
-        { q: "Pęcherzykowe pO2 = ciśnieniu w:", a: ["tętniczej", "żylnej", "kapilarach płucnych", "tętnicy płucnej"], c: 2, e: "Tam zachodzi równowaga." },
-        { q: "Kwasica metaboliczna (nerki) kompensacja:", a: ["szybszy oddech", "wolniejszy oddech", "chlor", "bikarbonat"], c: 0, e: "Usuwanie CO2." },
-        { q: "Pozaoddechowa funkcja płuc:", a: ["bradykinina", "Ang II", "surfaktant", "wszystkie"], c: 3, e: "Funkcje metaboliczne." },
-        { q: "Tył podwzgórza:", a: ["hipertermia", "senność", "hiperfagia", "moczówka"], c: 0, e: "Ośrodek zatrzymywania ciepła." },
-        { q: "Synapsa hamująca otwiera kanały:", a: ["Cl", "Na", "Ca", "K napięciozależne"], c: 0, e: "Wydzielanie GABA/Glicyny." },
-        { q: "Receptory neuronu są na:", a: ["dendrytach i somie", "aksonie", "kolbce", "brak"], c: 0, e: "Obszary bezmielinowe." },
-        { q: "Bloker Na w sercu:", a: ["faza 0", "plateau", "automatyzm", "repolaryzacja"], c: 0, e: "Hamuje depolaryzację." },
-        { q: "VO2max NIE zależy od:", a: ["produkcji CO2", "pojemności minutowej", "Hb", "kapilar"], c: 0, e: "Produkcja to skutek." },
-        { q: "Ślina spada przy:", a: ["strachu", "żuciu", "nudnościach", "smaku"], c: 0, e: "Działanie współczulne." },
-        { q: "M. gładki prawdziwe:", a: ["miozyna dłuższa", "brak miozyny", "brak aktyny", "brak tropomiozyny"], c: 0, e: "Budowa filamentów." },
-        { q: "Wibracje krzyżują się w:", a: ["rdzeniu przedłużonym", "rdzeniu kręgowym", "moście", "wzgórzu"], c: 0, e: "Drogi sznurów tylnych." },
-        { q: "Hipokamp uszkodzony to amnezja:", a: ["następcza", "wsteczna", "operacyjna", "krótkotrwała"], c: 0, e: "Brak konsolidacji." },
-        { q: "Bramka bólowa (rozcieranie):", a: ["włókna A-beta", "włókna C", "kora", "rdzeń przedłużony"], c: 0, e: "Stymulacja czucia dotyku." },
-        { q: "Próg tlenowy to:", a: ["wzrost wentylacji nieliniowy", "spadek CO2", "tętno max", "VO2max"], c: 0, e: "Przez buforowanie kwasu." },
-        { q: "Uszkodzenie prawej drogi korowo-rdzeniowej w rdzeniu:", a: ["prawostronne spastyczne poniżej", "lewo", "temp", "ból"], c: 0, e: "Poniżej skrzyżowania." },
-        { q: "Wapń w m. szkieletowym wiąże:", a: ["troponina", "kalmodulina", "tropomiozyna", "aktyna"], c: 0, e: "Wapń wiąże TnC." },
-        { q: "Pytanie o kompensację kwasicy metabolicznej:", a: ["oddech Kussmaula", "płytki oddech", "brak zmian", "zasadowica"], c: 0, e: "Zwiększenie wentylacji." }
+    // Baza pytań na podstawie przesłanego pliku
+    const rawQuestions = [
+        { id: 1, q: "U pacjenta z jakim schorzeniem podanie erytropoetyny będzie miało najwięcej sensu?", o: ["niewydolność nerek", "Niewydolność oddechowa", "Hipoksja hipoksyczna", "policytemia"], a: 0, e: "Nerki produkują 85-90% erytropoetyny w organizmie dorosłego człowieka." },
+        { id: 2, q: "Które zdanie najtrafniej opisuje zjawiska dotyczące sił elektrycznych i chemicznych działających na jony sodowe w typowej komórce pobudliwej przy depolaryzacji spowodowanej otwarciem kanałów sodowych?", o: ["siły chemiczne powodują napływ, elektryczne wypływ", "siły chemiczne powodują napływ, elektryczne napływ", "siły chemiczne powodują wypływ, elektryczne napływ", "siły chemiczne powodują wypływ, elektryczne wypływ"], a: 1, e: "Zarówno gradient stężeń (siła chemiczna), jak i ujemny potencjał wnętrza komórki (siła elektryczna) kierują jony Na+ do wnętrza." },
+        { id: 3, q: "Pacjent nie potrafi zapiąć guzików w koszuli. Niemożność wykonywania szybkich ruchów naprzemiennych to:", o: ["drżenie zamiarowe", "dysmetria", "dysdiadochokineza", "dysartria"], a: 2, e: "Adiadochokineza/dysdiadochokineza to niemożność wykonywania szybkich ruchów naprzemiennych, np. zapinania guzików." },
+        { id: 4, q: "95-letnia babcia mówi bez sensu: 'włożyłam garnek do telewizora', 'morele to piękne kwiaty'. Jest to:", o: ["amnezja następcza", "uszkodzenie w płacie skroniowym z afazją sensoryczną", "uszkodzenie w płacie skroniowym z afazją ruchową", "Alzheimer"], a: 1, e: "To objawy afazji sensorycznej (Wernickego) – pacjent mówi płynnie, ale nielogicznie." },
+        { id: 5, q: "Wskaż błędne stwierdzenie dotyczące układu limbicznego:", o: ["opis zespołu Korsakowa", "uszkodzenie ciała migdałowatego powoduje lękliwość", "obustronne uszkodzenie hipokampa powoduje problem z pamięcią długotrwałą", "uszkodzenie hipokampa utrudnia tworzenie wspomnień"], a: 1, e: "Błędne, ponieważ odcięcie/uszkodzenie ciała migdałowatego obniża strach i agresję (hiperoralność, łagodność)." },
+        { id: 6, q: "Mięśnie gładkie jednostkowe:", o: ["charakteryzują się dużą precyzją działania", "wykazują duży stopień automatyzmu dzięki komórkom rozrusznikowym", "są obficie unerwione", "są nazywane mięśniami typu neurogennego"], a: 1, e: "Mięśnie gładkie typu jednostkowego (trzewne) posiadają komórki rozrusznikowe i działają jako syncytium czynnościowe." },
+        { id: 7, q: "Co najbardziej hamuje motorykę żołądka?", o: ["Acetylocholina", "Gastryna", "Noradrenalina", "VIP"], a: 2, e: "Układ współczulny (noradrenalina) hamuje procesy trawienne i motorykę przewodu pokarmowego." },
+        { id: 8, q: "Co może powodować szmer skurczowy?", o: ["niedomykalność aortalna", "niedomykalność pnia", "zwężenie mitralnej", "ubytek przegrody międzykomorowej"], a: 3, e: "Ubytek przegrody (VSD) powoduje przepływ krwi podczas skurczu komór, co generuje szmer skurczowy." },
+        { id: 9, q: "Jak zahamowanie aktywności ATP-azy Na+/K+ wpływa na transport glukozy w kanaliku bliższym?", o: ["zmniejsza jej reabsorpcję", "zwiększa jej wydalanie", "zwiększa jej reabsorpcję", "zmniejsza jej wydalanie"], a: 0, e: "Transport glukozy zależy od gradientu sodowego wytwarzanego przez pompę Na/K." },
+        { id: 10, q: "Który układ czuciowy omija wzgórze podczas przewodzenia do kory?", o: ["propriocepcja", "smak", "węch", "wzrok"], a: 2, e: "Droga węchowa jest jedynym zmysłem, który dociera do kory z pominięciem wzgórza." },
+        { id: 11, q: "7-letni chłopiec traci zdolność utrzymania postawy ciała, ma słabe mięśnie. Czego mu brakuje?", o: ["dystrofiny", "receptora acetylocholiny", "acetylocholinoesterazy", "wapnia"], a: 0, e: "Brak dystrofiny jest przyczyną dystrofii mięśniowej Duchenne’a." },
+        { id: 12, q: "Człowiek po udarze nie rozumie słów, mówi szybko i bez sensu. Jest to:", o: ["prozopagnozja", "synestezja", "afazja Broki", "afazja Wernickiego"], a: 3, e: "Afazja Wernickiego (sensoryczna) to upośledzenie rozumienia mowy przy zachowanej płynności mówienia." },
+        { id: 13, q: "Co powoduje wzrost poziomu OB?", o: ["wzrost poziomu globulin", "wzrost poziomu albumin", "spadek fibrynogenu", "spadek ceruloplazminy"], a: 0, e: "OB rośnie przy wzroście białek o dużych cząsteczkach (globuliny, fibrynogen), które zmniejszają ładunek ujemny erytrocytów." },
+        { id: 14, q: "Zespół Cushinga charakteryzuje się:", o: ["zmniejszona odpowiedź na insulinę", "spadek rozkładu białek", "hipoglikemia", "wzrost stanów zapalnych"], a: 0, e: "Nadmiar kortyzolu działa diabetogennie i zmniejsza wrażliwość tkanek na insulinę." },
+        { id: 15, q: "Pacjent miał zawał lewej komory (spadek kurczliwości). Efektem będzie bezpośrednio:", o: ["spadek objętości wyrzutowej", "spadek pojemności minutowej", "spadek ciśnienia tętniczego", "spadek obwodowego ciśnienia żylnego"], a: 0, e: "Spadek kurczliwości bezpośrednio skutkuje zmniejszeniem ilości krwi wyrzucanej z komory (Stroke Volume)." },
+        { id: 16, q: "Struktury unerwione tylko przywspółczulnie to:", o: ["Gruczoły potowe", "Układ bodźcoprzewodzący serca", "Narządy płciowe", "Żadne"], a: 3, e: "Większość narządów ma podwójne unerwienie; gruczoły potowe są unerwione współczulnie (cholinergicznie)." },
+        { id: 17, q: "Pacjent z hipowolemią i hiponatremią może mieć:", o: ["SIADH", "niedobór mineralokortykoidów", "marskość wątroby"], a: 1, e: "Aldosteron (mineralokortykoid) odpowiada za resorpcję sodu i wody; jego brak prowadzi do utraty sodu i hipowolemii." },
+        { id: 18, q: "Prawidłowy czas krzepnięcia i nieprawidłowy czas krwawienia sugeruje:", o: ["nieprawidłowe czynniki krzepnięcia", "za mała liczba płytek", "nieprawidłowa reakcja naczyniowa", "odpowiedzi B i C"], a: 3, e: "Czas krwawienia zależy od płytek krwi i sprawności naczyń, a nie od osoczowych czynników krzepnięcia." },
+        { id: 19, q: "Gdzie wchłaniany jest czynnik wewnętrzny (Castle’a) wraz z witaminą B12?", o: ["dwunastnica", "jelito cienkie ogólnie", "jelito czcze", "jelito kręte"], a: 3, e: "Kompleks czynnik wewnętrzny-B12 jest wchłaniany w dystalnej części jelita krętego (ileum)." },
+        { id: 20, q: "Co rozpoczyna zewnątrzpochodny szlak krzepnięcia?", o: ["aktywacja czynnika XII", "aktywacja czynnika X", "przemiana protrombiny w trombinę", "uwolnienie tromboplastyny tkankowej (czynnik III)"], a: 3, e: "Szlak zewnątrzpochodny jest aktywowany przez czynnik tkankowy (TF) uwalniany z uszkodzonych tkanek." },
+        { id: 21, q: "Jaki proces hamuje insulina?", o: ["Glikoliza", "Glikogenoliza", "Synteza kwasów tłuszczowych", "Przesunięcie glukozy do mięśni"], a: 1, e: "Insulina hamuje rozpad glikogenu (glikogenolizę) i nasila jego syntezę." },
+        { id: 22, q: "Przez co jest wydzielana renina?", o: ["Tętniczka odprowadzająca", "Kanalik dystalny", "Tętniczka doprowadzająca", "Podocyty"], a: 2, e: "Komórki przykłębuszkowe (JG) znajdują się w ścianie tętniczki doprowadzającej." },
+        { id: 23, q: "Zwiększona luka anionowa wskazuje na:", o: ["akumulacja anionów organicznych w osoczu", "zwiększone wydalanie dwuwęglanów", "alkalozę metaboliczną", "alkalozę oddechową"], a: 0, e: "Luka anionowa rośnie, gdy pojawiają się dodatkowe aniony (np. mleczany, ciała ketonowe) w kwasicach metabolicznych." },
+        { id: 24, q: "Jaką kompensację zaobserwujemy po podaniu leków wazodylatacyjnych?", o: ["Tachykardia", "Bradykardia", "Zmniejszona frakcja wyrzutowa", "Zmniejszona pojemność minutowa"], a: 0, e: "Spadek ciśnienia wywołany wazodylatacją aktywuje odruch z baroreceptorów, co zwiększa częstość akcji serca." },
+        { id: 25, q: "Gonadotropina kosmówkowa (hCG):", o: ["hamuje wydzielanie progesteronu", "powoduje zanik ciałka żółtego", "stymuluje wydzielanie testosteronu u płodu męskiego", "powoduje skurcze macicy"], a: 2, e: "hCG stymuluje komórki Leydiga płodu do produkcji testosteronu, niezbędnego do różnicowania płci." },
+        { id: 26, q: "Miejscowa zmiana potencjału typu EPSP:", o: ["nie sumuje się w aksonach", "nie ma okresu refrakcji bezwzględnej", "działa 'wszystko albo nic'", "rozchodzi się wzdłuż włókna po przekroczeniu progu"], a: 1, e: "Potencjały stopniowane (jak EPSP) nie wykazują refrakcji, dlatego mogą się sumować." },
+        { id: 27, q: "Komórki włoskowate zewnętrzne w uchu:", o: ["wpływają na napięcie komórek wewnętrznych", "regulują napięcie błony bębenkowej", "lokalizują źródło dźwięku", "przekazują dźwięk bezpośrednio do nerwu"], a: 0, e: "Działają jako wzmacniacz kohlearny, modyfikując mechanikę błony podstawnej." },
+        { id: 28, q: "Źrenica nie reaguje na światło, ale zachowany jest odruch akomodacji. To:", o: ["objaw Argylla Robertsona", "zespół Hornera", "jaskra", "zaćma"], a: 0, e: "Objaw Argylla Robertsona to klasyczny objaw w kile układu nerwowego." },
+        { id: 29, q: "Ruch stereociliów w stronę kinocilium powoduje:", o: ["otwarcie kanałów wapniowych i potasowych", "otwieranie kanałów sodowych", "zamknięcie kanałów potasowych", "hiperpolaryzację"], a: 0, e: "Ugięcie w stronę kinocilium otwiera kanały mechanozależne i powoduje depolaryzację." },
+        { id: 30, q: "W którym płynie jest największe ciśnienie onkotyczne?", o: ["wewnątrzkomórkowym", "wewnątrznaczyniowym (osocze)", "tkankowym", "wszystkie takie samo"], a: 1, e: "Osocze zawiera dużo białek (albumin), które generują główne ciśnienie onkotyczne organizmu." },
+        { id: 31, q: "Który pacjent ma ostrą fazę boreliozy? (bz = negatywny)", o: ["IgM- IgG-", "IgM+ IgG+", "IgM- IgG+", "IgM+ IgG-"], a: 3, e: "Obecność przeciwciał w klasie IgM przy braku IgG świadczy o wczesnej, ostrej fazie infekcji." },
+        { id: 32, q: "Deficyt tlenowy to:", o: ["nadmiar O2 pobrany po wysiłku", "procesy beztlenowe na starcie", "pokrywany wyłącznie przez fosfokreatynę", "różnica między zapotrzebowaniem a poborem na początku wysiłku"], a: 3, e: "Deficyt tlenowy powstaje na początku wysiłku, zanim układy krążenia i oddechowy dostosują się do potrzeb." },
+        { id: 33, q: "Czym różni się układ przywspółczulny od współczulnego?", o: ["Ma dwubiegunowe neurony", "zazwojowe posiada w OUN", "Ma krótkie aksony zazwojowe", "Ma długie aksony zazwojowe"], a: 2, e: "Zwoje przywspółczulne leżą blisko lub w ścianie narządów, więc aksony zazwojowe są krótkie." },
+        { id: 34, q: "Enzym najistotniejszy w rozkładaniu skrobi to:", o: ["Alfa amylaza ślinowa", "Alfa amylaza trzustkowa", "Lipaza", "Pepsyna"], a: 1, e: "Amylaza trzustkowa odpowiada za większość trawienia skrobi w jelicie cienkim." },
+        { id: 35, q: "Jak przewodzony jest ból przewlekły?", o: ["włókna C, ostry i zlokalizowany", "włókna C, tępy i rozlany", "włókna A delta, ostry", "włókna A delta, tępy"], a: 1, e: "Włókna C są wolne, niezmielinizowane i przewodzą ból wolny, piekący i słabo zlokalizowany." },
+        { id: 36, q: "Receptor aktywowany zarówno elektrycznie jak i chemicznie?", o: ["NMDA glutaminergiczny", "Nikotynowy", "GABAb", "brak takiego"], a: 0, e: "NMDA wymaga przyłączenia glutaminianu (chemicznie) oraz depolaryzacji błony do usunięcia bloku Mg2+ (elektrycznie)." },
+        { id: 37, q: "Hormon przysadki odpowiedzialny za produkcję mleka:", o: ["LH", "Oksytocyna", "Progesteron", "Prolaktyna"], a: 3, e: "Prolaktyna stymuluje produkcję mleka; oksytocyna odpowiada za jego wyrzut." },
+        { id: 38, q: "Gdzie wchłaniana jest większość HCO3- i wody w nerkach?", o: ["kanalik proksymalny", "kanalik dystalny", "pętla Henlego", "kanalik zbiorczy"], a: 0, e: "Ok. 65-80% wody i niemal całe przefiltrowane HCO3- resorbowane jest w kanale bliższym." },
+        { id: 39, q: "Hormon hamujący rozwój więcej niż jednego pęcherzyka jajnikowego:", o: ["estradiol", "inhibina", "progesteron", "AMH"], a: 3, e: "Hormon anty-Müllerowski (AMH) hamuje rekrutację pęcherzyków pierwotnych i ich wrażliwość na FSH." },
+        { id: 40, q: "Wskaż fałszywe o odkorowaniu i odmóżdżeniu:", o: ["rokowanie lepsze przy przejściu z odmóżdżenia na odkorowanie", "przy odmóżdżeniu kończyny wyprostowane", "przy odkorowaniu kończyny dolne wyprostowane, górne zgięte", "odkorowanie jest gdy uszkodzenie jest poniżej jądra czerwiennego"], a: 3, e: "Fałszywe. Uszkodzenie PONIŻEJ jądra czerwiennego to odmóżdżenie (sztywność wyprostna)." },
+        { id: 41, q: "Uszkodzenie połowicze rdzenia Th6 (zespół Brown-Sequarda). Co wystąpi?", o: ["porażenie wiotkie po przeciwnej stronie", "brak wibracji po przeciwnej stronie", "porażenie spastyczne po stronie uszkodzenia", "brak czucia bólu i temperatury po przeciwnej stronie (2 kręgi niżej)"], a: 3, e: "Droga rdzeniowo-wzgórzowa (ból/temp) krzyżuje się w rdzeniu, więc ubytek jest kontralateralny." },
+        { id: 42, q: "Funkcja móżdżku nowego (neocerebellum):", o: ["wzmaganie ruchów oscylacyjnych", "planowanie ruchów dowolnych", "obniżenie napięcia mięśniowego", "równowaga statyczna"], a: 1, e: "Móżdżek nowy odpowiada za precyzję, koordynację i planowanie ruchów." },
+        { id: 43, q: "Grupa krwi A1B Rh(-). Gdzie zajdzie aglutynacja?", o: ["surowica A, surowica B, surowica AB, dolichotest", "surowica A, B, AB, anty-D", "anty-D tylko", "nic nie zajdzie"], a: 0, e: "A1B reaguje z surowicami odpornościowymi A, B i AB oraz z lektyną Dolichos biflorus (test na podgrupę A1)." },
+        { id: 44, q: "Pacjent ma parafazję i astereognozję (nie rozpoznaje przedmiotów dotykiem). Uszkodzenie w:", o: ["płat czołowy", "płat potyliczny", "płat skroniowy", "płat ciemieniowy"], a: 3, e: "Płat ciemieniowy odpowiada za integrację czuciową i orientację przestrzenną (stereognozja)." },
+        { id: 45, q: "Ostatnie miejsce tworzenia aminokwasów z di/tripeptydów:", o: ["światło jelita", "światło okrężnicy", "rąbek szczoteczkowy okrężnicy", "rąbek szczoteczkowy jelita cienkiego"], a: 3, e: "Ostateczna hydroliza peptydów zachodzi w rąbku szczoteczkowym enterocytów." },
+        { id: 46, q: "W jaki sposób adrenalina zwiększa siłę skurczu serca?", o: ["Zwiększa stężenie wapnia w siateczce sarkoplazmatycznej", "Fosforyluje łańcuchy lekkie miozyny", "Zwiększa usuwanie wapnia przez SERCA", "Hamuje receptory rianodynowe"], a: 0, e: "Adrenalina przez cAMP zwiększa napływ Ca2+ i jego zasoby w SR (efekt inotropowy dodatni)." },
+        { id: 47, q: "Objaw uszkodzenia górnego motoneuronu:", o: ["zniesienie odruchu na rozciąganie", "zwiększenie siły", "stałe zmniejszenie napięcia", "dodatni objaw Babińskiego"], a: 3, e: "Objaw Babińskiego jest patognomoniczny dla uszkodzenia drogi piramidowej." },
+        { id: 48, q: "Prawdziwe o płynie mózgowo-rdzeniowym (PMR):", o: ["ciśnienie 180 mmHg", "ma więcej glukozy niż krew", "produkowany 150ml/dobę", "żadne nie jest prawdą"], a: 3, e: "PMR ma mniej glukozy niż krew, ciśnienie podaje się w mmH2O (nie mmHg), a dobowa produkcja to ok. 500ml." },
+        { id: 49, q: "Komórki tworzące barierę krew-mózg:", o: ["astrocyty", "komórki glejowe ogólnie", "kk wyściółki", "podocyty"], a: 0, e: "Wypustki astrocytów (stopy naczyniowe) współtworzą barierę krew-mózg." },
+        { id: 50, q: "Białko NIEPOTRZEBNE do skurczu mięśnia gładkiego:", o: ["Aktyna", "Miozyna", "Troponina", "Ca2+-ATP-aza"], a: 2, e: "W mięśniach gładkich nie ma troponiny; jej rolę pełni kalmodulina." },
+        { id: 51, q: "Marskość wątroby, obrzęki. Jakie ciśnienie się zmniejsza?", o: ["onkotyczne osocza", "onkotyczne płynu tkankowego", "hydrostatyczne", "żadne"], a: 0, e: "Wątroba produkuje albuminy; ich brak obniża ciśnienie onkotyczne i powoduje obrzęki." },
+        { id: 52, q: "Aktywna pompa sodowo-potasowa powoduje bezpośrednio:", o: ["hiperpolaryzację błony", "depolaryzację", "spadek K+ wewnątrz", "spadek energii"], a: 0, e: "Pompa jest elektrogenna (3 Na+ na zewnątrz / 2 K+ do środka), co generuje ujemny potencjał." },
+        { id: 53, q: "Błędne o wapniu w mięśniach gładkich:", o: ["uwalnianie z SR przez IP3", "napływ przez kanały Ca2+ napięciozależne", "jony wapnia konieczne do skurczu", "mechanizm zasuwki wymaga dużego nakładu energii"], a: 3, e: "Mechanizm zasuwki (latch-state) pozwala na utrzymanie skurczu przy BARDZO MAŁYM nakładzie energii." },
+        { id: 54, q: "Picie słonej wody morskiej przez rozbitka prowadzi do:", o: ["odwodnienia izotonicznego", "odwodnienia hipotonicznego", "przewodnienia", "odwodnienia hipertonicznego"], a: 3, e: "Sól zwiększa osmolarność osocza, co wyciąga wodę z komórek (odwodnienie hipertoniczne)." },
+        { id: 55, q: "W jakiej chorobie dochodzi do zwiększenia objętości płuc (pojemności zalegającej)?", o: ["Rozedma", "Odma", "choroba błon szklistych", "zwłóknienie płuc"], a: 0, e: "W rozedmie dochodzi do destrukcji przegród i 'pułapki powietrznej', co zwiększa objętość klatki piersiowej." },
+        { id: 56, q: "Zjawisko na wykresie P-V serca między końcem napełniania a początkiem skurczu izowolumetrycznego:", o: ["skurcz izowolumetryczny", "wyrzut komorowy", "rozkurcz izowolumetryczny", "skurcz przedsionków"], a: 3, e: "Skurcz przedsionka dopełnia komorę krwią tuż przed zamknięciem zastawki mitralnej (punkt B)." },
+        { id: 57, q: "Alergia na orzeszki (typ I). Które komórki odpowiadają za objawy?", o: ["eozynofile", "makrofagi", "neutrofile", "Mastocyty"], a: 3, e: "Mastocyty i bazofile wiążą IgE i uwalniają histaminę w reakcji typu I." },
+        { id: 58, q: "Ujemne ciśnienie w pęcherzykach płucnych występuje:", o: ["podczas wydechu", "podczas wdechu", "pod koniec wdechu", "przed oddychaniem"], a: 1, e: "Podczas wdechu powiększenie klatki piersiowej generuje podciśnienie, które zasysa powietrze." },
+        { id: 59, q: "Efekt działania parathormonu (PTH) w nerkach:", o: ["resorpcja Ca2+", "wzrost wchłaniania fosforu z jelita", "resorpcja fosforanu", "wzrost Cl-"], a: 0, e: "PTH zwiększa reabsorpcję wapnia w kanalikach nerkowych i hamuje reabsorpcję fosforanów." },
+        { id: 60, q: "Hormony tarczycy wpływają na:", o: ["mielinizacja w OUN", "wzrost płodu", "zmniejszenie cholesterolu", "wszystkie wymienione"], a: 0, e: "Tarczyca jest niezbędna do prawidłowego rozwoju układu nerwowego (mielinizacji) u płodu i noworodka." },
+        { id: 61, q: "Przy obniżeniu temperatury ciała NIE DOCHODZI do:", o: ["spadku działania hormonów tarczycy", "termogenezy drżeniowej", "wzrostu katabolizmu", "zwężenia naczyń"], a: 0, e: "W zimnie metabolizm i hormony tarczycy rosną, aby zwiększyć produkcję ciepła." },
+        { id: 62, q: "Zapis EKG przedstawiający szerokie, regularne zespoły QRS bez widocznych załamków P przy wysokiej częstości to:", o: ["Częstoskurcz komorowy", "Migotanie komór", "blok III", "Migotanie przedsionków"], a: 0, e: "Częstoskurcz komorowy charakteryzuje się rytmicznymi, szerokimi zespołami QRS." },
+        { id: 63, q: "Odcinek PQ w EKG odpowiada za:", o: ["Depolaryzacja przedsionków", "przewodzenie w węźle AV", "pęczek Hisa", "przewodzenie przedsionkowo-komorowe"], a: 3, e: "Odcinek PQ reprezentuje opóźnienie przewodzenia impulsu w węźle AV." },
+        { id: 64, q: "Podanie atropiny (bloker receptorów M) spowoduje:", o: ["bradykardia", "tachykardia", "blok współczulny", "obniżenie siły"], a: 1, e: "Atropina blokuje hamujący wpływ nerwu błędnego na serce, co przyspiesza rytm." },
+        { id: 65, q: "Drżenie spoczynkowe, brak mimiki, problem z ruchami dowolnymi. Przyczyna to uszkodzenie:", o: ["Neuronów dopaminergicznych", "Receptorów dopaminy", "Neuronów cholinergicznych", "Receptorów Ach"], a: 0, e: "To objawy choroby Parkinsona – zanik neuronów dopaminergicznych w istocie czarnej." },
+        { id: 66, q: "Płytka ruchowa mięśnia szkieletowego posiada:", o: ["receptory nikotynowe", "kanały T", "kanały sodowe napięciozależne", "kanały wapniowe"], a: 0, e: "Receptory w płytce motorycznej to receptory jonotropowe nikotynowe (nAchR)." },
+        { id: 67, q: "Po zjedzeniu słonych śledzi nastąpi:", o: ["hamowanie angiotensyny II", "zahamowanie ANP", "obniżenie GFR", "pobudzenie współczulne"], a: 0, e: "Wzrost podaży soli hamuje układ RAA (renina-angiotensyna-aldosteron)." },
+        { id: 68, q: "Gdzie w oku powstaje potencjał czynnościowy?", o: ["czopki", "pręciki", "komórka dwubiegunowa", "komórka zwojowa"], a: 3, e: "Fotoreceptory i komórki dwubiegunowe generują potencjały stopniowane. Dopiero komórki zwojowe wysyłają potencjały czynnościowe." },
+        { id: 69, q: "Guz przysadki uciskający skrzyżowanie nerwów wzrokowych spowoduje:", o: ["niedowidzenie połowicze dwuskroniowe", "całkowitą ślepotę", "widzenie tunelowe", "brak reakcji na światło"], a: 0, e: "Ucisk na środkową część skrzyżowania niszczy włókna z nosowych części siatkówki (pole skroniowe)." },
+        { id: 70, q: "Wskaż fałszywe o EEG:", o: ["ośrodek snu REM jest w jądrze miejsca sinawego", "fale delta są przy lekkim śnie", "fale beta przy czuwaniu", "faza REM to desynchronizacja"], a: 1, e: "Fale delta (0.5-4 Hz) to sen głęboki (N3), a nie lekki." },
+        { id: 71, q: "Hormon najbardziej pobudzający motorykę żołądka:", o: ["CCK", "gastryna", "insulina", "sekretyna"], a: 1, e: "Gastryna nasila skurcze żołądka i wydzielanie HCl." },
+        { id: 72, q: "Objaw ostrej niewydolności nerek to:", o: ["Zmniejszony klirens kreatyniny", "Zwiększony sód w moczu", "poliuria", "zasadowica"], a: 0, e: "Klirens kreatyniny jest miarą przesączania kłębuszkowego (GFR); jego spadek oznacza niewydolność." },
+        { id: 73, q: "Bufor zapobiegający zakwaszeniu wewnątrz erytrocytu:", o: ["oksyhemoglobina", "deoksyhemoglobina", "wodorowęglanowy", "fosforanowy"], a: 1, e: "Deoksyhemoglobina ma większe powinowactwo do H+ niż oksyhemoglobina (efekt Haldane'a)." },
+        { id: 74, q: "Kiedy pCO2 w krwi żylnej będzie ZMNIEJSZONE?", o: ["zwiększony metabolizm", "kwasica oddechowa", "hipoksja (spadek pO2 tętniczego do 80mmHg)", "anemia"], a: 1, e: "W kwasicy oddechowej pCO2 jest podwyższone, więc odpowiedź sugeruje błąd w kluczu lub specyficzny mechanizm kompensacyjny." },
+        { id: 75, q: "Co najbardziej zwiększy podstawową przemianę materii (PPM)?", o: ["drugi trymestr ciąży", "dieta wysokobiałkowa", "wysiłek fizyczny"], a: 0, e: "Ciąża i wzrost tkanek płodu znacząco podnoszą PPM matki." },
+        { id: 76, q: "Hormon łożyskowy podobny do hormonu wzrostu:", o: ["progesteron", "Somatomammotropina kosmówkowa (hPL)", "hCG"], a: 1, e: "hPL (laktogen łożyskowy) ma strukturę podobną do GH i działa anabolicznie." },
+        { id: 77, q: "pO2 pęcherzykowe 100, tętnicze 95. pCO2 tętnicze 40. Te parametry są:", o: ["zaburzeniem dyfuzji", "hipowentylacją", "prawidłowe", "przeciekiem płucnym"], a: 2, e: "To fizjologiczne wartości gazometrii u zdrowego człowieka." },
+        { id: 78, q: "Hormon wydzielany przez podwzgórze:", o: ["GH", "prolaktyna", "TSH", "GnRH"], a: 3, e: "GnRH (gonadoliberyna) jest hormonem uwalniającym produkowanym w podwzgórzu." },
+        { id: 79, q: "U zdrowego człowieka ciśnienie tlenu w pęcherzykach jest równe ciśnieniu w:", o: ["krwi tętniczej", "krwi żylnej", "włośniczkach obwodowych", "kapilarach płucnych (na końcu)"], a: 3, e: "Krew opuszczająca kapilary płucne osiąga niemal pełną równowagę z gazem pęcherzykowym." },
+        { id: 80, q: "Kompensacja w kwasicy metabolicznej przy niewydolności nerek:", o: ["zatrzymanie zasad w jelicie", "zwiększona częstość oddechów", "zmniejszona częstość oddechów"], a: 1, e: "Kompensacja oddechowa polega na hiperwentylacji (oddech Kussmaula), aby wydalić CO2." },
+        { id: 81, q: "Wykres P-V: Obniżenie pętli (osiąganie niższych ciśnień skurczowych) powoduje:", o: ["zwiększony powrót żylny", "zwiększona objętość wyrzutowa", "Rozkurcz tętnic (spadek afterload)", "współczulny"], a: 2, e: "Spadek oporu obwodowego (afterload) ułatwia wyrzut krwi przy niższym ciśnieniu w komorze." },
+        { id: 82, q: "Funkcja pozaoddechowa płuc:", o: ["wymiana gazowa", "synteza węglowodanów", "równowaga kwasowo-zasadowa", "konwersja angiotensyny I do II"], a: 3, e: "Płuca zawierają enzym ACE, który przekształca AT I w aktywną AT II." },
+        { id: 83, q: "Uszkodzenie tyłu podwzgórza spowoduje:", o: ["senność", "bezsenność", "hiperfagię", "hipertermię"], a: 3, e: "Tylne podwzgórze odpowiada za zatrzymywanie ciepła; jego uszkodzenie zaburza termoregulację." },
+        { id: 84, q: "Najczęstszy mechanizm w synapsie hamującej:", o: ["wzrost przepuszczalności dla Cl-", "wzrost dla Na+", "otwarcie kanałów K+"], a: 0, e: "Napływ Cl- do wnętrza powoduje hiperpolaryzację błony (IPSP)." },
+        { id: 85, q: "Gdzie są receptory dla neurotransmitera na neuronie zmielinizowanym?", o: ["tylko na dendrycie", "dendryt i ciało komórki", "tylko na aksonie", "w przewężeniach Ranviera"], a: 1, e: "Synapsy tworzą się głównie na dendrytach i somie neuronu." },
+        { id: 86, q: "Lek bloker kanału sodowego w sercu wpływa najbardziej na:", o: ["automatyzm SA", "przewodzenie AV", "fazy plateau", "rozpoczęcie potencjału czynnościowego w miocycie"], a: 3, e: "Faza 0 (szybka depolaryzacja) miocytów komór zależy od prądu sodowego." },
+        { id: 87, q: "Co bezpośrednio NIE WPŁYWA na wzrost VO2max?", o: ["hemoglobina", "gęstość kapilar", "większa produkcja CO2 w mięśniach", "pojemność minutowa"], a: 2, e: "Produkcja CO2 jest skutkiem, a nie czynnikiem limitującym VO2max." },
+        { id: 88, q: "Wydzielanie śliny spadnie w sytuacji:", o: ["strachu", "obiektu w ustach", "nudności", "żucia"], a: 0, e: "Stres/strach aktywuje układ współczulny, który zagęszcza ślinę i hamuje jej wydzielanie wodniste." },
+        { id: 89, q: "Prawdziwe o mięśniach:", o: ["miozyna w gładkich jest dłuższa niż w szkieletowych", "gładkie mają więcej miozyny", "gładkie nie mają aktyny"], a: 0, e: "Cząsteczki miozyny w mięśniach gładkich są dłuższe i ułożone tak, by pozwalać na większe skrócenie." },
+        { id: 90, q: "Gdzie krzyżują się drogi przenoszące wibracje i czucie głębokie?", o: ["w moście", "w rdzeniu przedłużonym", "w śródmózgowiu", "w rdzeniu kręgowym"], a: 1, e: "Wstęga przyśrodkowa (droga sznurów tylnych) krzyżuje się w jądrach smukłym i klinowatym rdzenia przedłużonego." },
+        { id: 91, q: "Uszkodzenie obustronne hipokampa wywołuje:", o: ["amnezję następczą", "utratę pamięci operacyjnej", "afazję"], a: 0, e: "Pacjent nie może tworzyć nowych wspomnień deklaratywnych (słynny przypadek HM)." },
+        { id: 92, q: "Rozcieranie uderzonego miejsca (łagodzenie bólu) to mechanizm:", o: ["hamowania zstępującego", "bramkowania bólu na poziomie rdzenia", "odruchu", "hiperpolaryzacji"], a: 1, e: "Teoria bramki: stymulacja grubych włókien czuciowych A-beta hamuje przewodzenie bólu we włóknach C." },
+        { id: 93, q: "Przekroczenie progu tlenowego podczas wysiłku najlepiej opisuje:", o: ["stabilizacja mleczanów", "dominacja fosfokreatyny", "nieliniowy wzrost wentylacji przez buforowanie mleczanów", "max siła typu 1"], a: 2, e: "Wzrost kwasu mlekowego wymusza buforowanie wodorowęglanami, co uwalnia CO2 i gwałtownie napędza wentylację." },
+        { id: 94, q: "Uszkodzenie prawej drogi korowo-rdzeniowej bocznej wywoła:", o: ["lewostronne porażenie wiotkie", "lewostronną utratę wibracji", "prawostronne porażenie spastyczne poniżej", "prawostronną utratę bólu"], a: 2, e: "Drogi piramidowe krzyżują się w rdzeniu przedłużonym, więc uszkodzenie w rdzeniu kręgowym daje objawy po TEJ SAMEJ stronie." },
+        { id: 95, q: "Białko wiążące wapń w mięśniach szkieletowych:", o: ["kalmodulina", "troponina", "tropomiozyna", "aktyna"], a: 1, e: "W mięśniu szkieletowym Ca2+ wiąże się z troponiną C, co odsłania miejsca wiązania na aktynie." }
     ];
 
-    let current = 0;
+    let currentQuestions = [];
+    let currentIndex = 0;
     let score = 0;
-    let userSel = null;
-    let isReview = false;
+    let answeredCount = 0;
     let errors = [];
 
-    function update() {
-        isReview = false;
-        userSel = null;
-        document.getElementById('action-btn').disabled = true;
-        document.getElementById('action-btn').innerText = "SPRAWDŹ";
-        document.getElementById('fb-box').style.display = "none";
+    function initQuiz() {
+        currentQuestions = [...rawQuestions].sort(() => Math.random() - 0.5);
+        currentIndex = 0;
+        score = 0;
+        answeredCount = 0;
+        errors = [];
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const q = currentQuestions[currentIndex];
+        document.getElementById('question-number').innerText = `Pytanie ${currentIndex + 1} z ${currentQuestions.length}`;
+        document.getElementById('q-text').innerText = q.q;
         
-        const q = questions[current];
-        document.getElementById('q-meta').innerText = `PYTANIE ${current + 1} Z ${questions.length}`;
-        document.getElementById('q-txt').innerText = q.q;
-        document.getElementById('progress-fill').style.width = `${(current / questions.length) * 100}%`;
+        const optionsDiv = document.getElementById('q-options');
+        optionsDiv.innerHTML = '';
         
-        const list = document.getElementById('opt-list');
-        list.innerHTML = '';
-        q.a.forEach((opt, i) => {
-            const btn = document.createElement('div');
-            btn.className = 'opt-btn';
-            btn.innerText = `${String.fromCharCode(97 + i)}. ${opt}`;
-            btn.onclick = () => select(i, btn);
-            list.appendChild(btn);
+        q.o.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(idx);
+            optionsDiv.appendChild(btn);
         });
-    }
 
-    function select(idx, el) {
-        if(isReview) return;
-        document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        userSel = idx;
-        document.getElementById('action-btn').disabled = false;
-    }
-
-    function handleFlow() {
-        if(!isReview) {
-            check();
-        } else {
-            current++;
-            if(current < questions.length) update();
-            else showResults();
-        }
-    }
-
-    function check() {
-        isReview = true;
-        const q = questions[current];
-        const isCorrect = userSel === q.c;
-        const fb = document.getElementById('fb-box');
-        fb.style.display = "block";
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('next-btn').disabled = true;
+        document.getElementById('prev-btn').disabled = currentIndex === 0;
         
-        if(isCorrect) {
+        const progress = ((currentIndex) / currentQuestions.length) * 100;
+        document.getElementById('progress-fill').style.width = progress + '%';
+    }
+
+    function checkAnswer(selectedIdx) {
+        const q = currentQuestions[currentIndex];
+        const buttons = document.getElementsByClassName('option-btn');
+        
+        for (let btn of buttons) btn.disabled = true;
+
+        const feedbackDiv = document.getElementById('feedback');
+        const feedbackMsg = document.getElementById('feedback-msg');
+        const explanation = document.getElementById('explanation');
+        feedbackDiv.style.display = 'block';
+
+        if (selectedIdx === q.a) {
+            buttons[selectedIdx].classList.add('correct');
+            feedbackMsg.innerText = "Doskonale! Poprawna odpowiedź.";
+            feedbackDiv.className = 'feedback-correct';
             score++;
-            fb.className = "fb-correct";
-            fb.innerHTML = `<strong>DOBRZE!</strong><br><small>${q.e}</small>`;
         } else {
-            fb.className = "fb-wrong";
-            fb.innerHTML = `<strong>BŁĄD.</strong><br>Poprawna: ${String.fromCharCode(97+q.c)}. ${q.a[q.c]}<br><small>${q.e}</small>`;
-            errors.push({n: current+1, q: q.q, c: q.a[q.c]});
+            buttons[selectedIdx].classList.add('wrong');
+            buttons[q.a].classList.add('correct');
+            feedbackMsg.innerText = `Błąd. Poprawna odpowiedź to: ${q.o[q.a]}`;
+            feedbackDiv.className = 'feedback-wrong';
+            errors.push({ id: q.id, q: q.q, correct: q.o[q.a] });
         }
-        document.getElementById('action-btn').innerText = "DALEJ";
+
+        explanation.innerText = q.e;
+        answeredCount++;
+        updateLiveScore();
+        document.getElementById('next-btn').disabled = false;
     }
 
-    function showResults() {
-        document.getElementById('quiz-ui').style.display = "none";
-        document.getElementById('results').style.display = "block";
-        document.getElementById('progress-fill').style.width = "100%";
-        const pct = (score / questions.length * 100).toFixed(1);
-        document.getElementById('final-pct').innerText = `${pct}%`;
-        document.getElementById('score-text').innerText = `Twoja liczba punktów: ${score} z ${questions.length}`;
+    function updateLiveScore() {
+        document.getElementById('score-live').innerText = `Wynik: ${score}/${answeredCount}`;
+    }
+
+    function nextQuestion() {
+        if (currentIndex < currentQuestions.length - 1) {
+            currentIndex++;
+            showQuestion();
+        } else {
+            showFinalResults();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            showQuestion();
+        }
+    }
+
+    function skipQuestion() {
+        nextQuestion();
+    }
+
+    function showFinalResults() {
+        document.getElementById('quiz-view').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
         
-        const errList = document.getElementById('err-list');
-        if(errors.length > 0) {
-            errList.innerHTML = '<h3>TWOJE BŁĘDY:</h3>';
-            errors.forEach(e => {
-                errList.innerHTML += `<div class="error-item"><strong>Pytanie ${e.n}:</strong> ${e.q}<br><span style="color:#81c784">Poprawna: ${e.c}</span></div>`;
-            });
+        const percent = Math.round((score / currentQuestions.length) * 100);
+        document.getElementById('final-score').innerText = `Wynik: ${score} / ${currentQuestions.length} (${percent}%)`;
+        
+        const errorSummary = document.getElementById('error-summary');
+        if (errors.length === 0) {
+            errorSummary.innerHTML = "<h3>Gratulacje! Brak błędnych odpowiedzi.</h3>";
         } else {
-            errList.innerHTML = "<h3>PERFEKCYJNIE!</h3>";
+            errorSummary.innerHTML = "<h3>Lista błędnych pytań:</h3>";
+            errors.forEach(err => {
+                errorSummary.innerHTML += `
+                    <div class="error-item">
+                        <strong>Pytanie ${err.id}:</strong> ${err.q}<br>
+                        <span style="color: green">Poprawna: ${err.correct}</span>
+                    </div>`;
+            });
         }
     }
 
-    update();
+    initQuiz();
 </script>
 
 </body>
